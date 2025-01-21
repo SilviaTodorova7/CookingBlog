@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace CookingBlog.Data.Models
 {
@@ -11,6 +11,8 @@ namespace CookingBlog.Data.Models
         {
             this.IsActive = true;
             this.Comments = new HashSet<Comment>();
+            this.Ratings = new HashSet<Rating>();
+            this.Rating = this.Ratings.Where(r => r.RecipeId == this.Id).Average(r => r.Value).ToString();
         }
 
         [Key]
@@ -45,5 +47,9 @@ namespace CookingBlog.Data.Models
 
         public ICollection<Comment> Comments { get; set; }
 
+        public string Rating { get; set; } = null!;
+
+        public ICollection<Rating> Ratings { get; set; }
     }
+
 }
