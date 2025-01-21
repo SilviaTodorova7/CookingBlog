@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
+using static CookingBlog.Common.EntityValidationConstants.Recipe;
 
 namespace CookingBlog.Data.Models
 {
@@ -19,11 +19,11 @@ namespace CookingBlog.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(150)]
+        [StringLength(TitleMaxLength, MinimumLength = TitleMaxLength)]
         public string Title { get; set; } = null!;
 
         [Required]
-        [StringLength(2000)]
+        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; } = null!;
 
         [ForeignKey(nameof(Category))]
@@ -40,7 +40,7 @@ namespace CookingBlog.Data.Models
         public IdentityUser Author { get; set; } = null!;
 
         [Required]
-        [StringLength(250)]
+        [StringLength(ImageUrlMaxLength, MinimumLength = ImageUrlMinLength)]
         public string ImageUrl { get; set; } = null!;
 
         public bool IsActive { get; set; }
