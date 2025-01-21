@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static CookingBlog.Common.EntityValidationConstants.Comment;
 
 namespace CookingBlog.Data.Models
 {
@@ -10,11 +11,11 @@ namespace CookingBlog.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(TitleMaxLength, MinimumLength =TitleMinLength)]
         public string Title { get; set; } = null!;
 
         [Required]
-        [StringLength (200)]
+        [StringLength (ContentMaxLength, MinimumLength = ContentMinLength)]
         public string Content { get; set; } = null!;
 
         [Required]

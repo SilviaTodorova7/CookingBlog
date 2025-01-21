@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static CookingBlog.Common.EntityValidationConstants.Rating;
 
 namespace CookingBlog.Data.Models
 {
@@ -18,7 +19,7 @@ namespace CookingBlog.Data.Models
         public Recipe Recipe { get; set; } = null!;
 
         [Required]
-        [Range(1, 5)]
+        [Range(RatingMinLength, RatingMaxLength)]
         public int Value { get; set; }
 
         [Required]

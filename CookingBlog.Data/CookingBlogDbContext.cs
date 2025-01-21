@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace CookingBlog.Data
 {
@@ -24,7 +25,7 @@ namespace CookingBlog.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetAssembly(typeof(CookingBlogDbContext)) ?? Assembly.GetExecutingAssembly());
 
             builder.Entity<Recipe>()
                 .HasOne(r => r.Category)
@@ -40,6 +41,8 @@ namespace CookingBlog.Data
                 .HasOne(r => r.Recipe)
                 .WithMany(r => r.Ratings)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            base.OnModelCreating(builder);
         }
     }
 }

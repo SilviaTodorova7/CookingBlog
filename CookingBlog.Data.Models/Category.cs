@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
+using static CookingBlog.Common.EntityValidationConstants.Category;
 
 namespace CookingBlog.Data.Models
 {
@@ -12,7 +14,7 @@ namespace CookingBlog.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; set; } = null!;
 
         public ICollection<Recipe> Recipes { get; set; }
