@@ -1,6 +1,8 @@
 using CookingBlog.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using CookingBlog.Services;
+using CookingBlog.Services.Interfaces;
 
 namespace CookingBlog
 {
@@ -20,6 +22,8 @@ namespace CookingBlog
                 .AddEntityFrameworkStores<CookingBlogDbContext>();
 
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IRecipeService, RecipeService>();
 
             builder.Services.Configure<IdentityOptions>(opt =>
             {

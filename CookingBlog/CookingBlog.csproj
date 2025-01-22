@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CookingBlog.Data\CookingBlog.Data.csproj" />
+    <ProjectReference Include="..\CookingBlog.Services\CookingBlog.Services.csproj" />
+    <ProjectReference Include="..\cookingBlog.Web.ViewModels\CookingBlog.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

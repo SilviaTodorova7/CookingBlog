@@ -1,0 +1,26 @@
+﻿@model ICollection<RecipeViewModel>
+@{
+    ViewBag.Title = "All Recipes";
+}
+<h2>
+    <h2>@ViewBag.Title</h2>
+    <ul class="Recipe">
+        @foreach(var recipe in Model)
+        {
+            <li>@recipe.Title</li>
+            <li>@recipe.Author</li>
+            <li>@recipe.ImageUrl</li>
+            @if (recipe.Rating == null)
+            {
+                <li>Not Rated Yet</li>
+            }
+            else
+            {
+                <li>@recipe.Rating</li>
+            }
+            <p></p>
+        }
+</ul>
+</p>
+
+

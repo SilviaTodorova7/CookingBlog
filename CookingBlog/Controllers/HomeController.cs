@@ -1,4 +1,4 @@
-using CookingBlog.ViewModels;
+using CookingBlog.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
