@@ -2,25 +2,33 @@
 @{
     ViewBag.Title = "All Recipes";
 }
-<h2>
-    <h2>@ViewBag.Title</h2>
-    <ul class="Recipe">
-        @foreach(var recipe in Model)
-        {
-            <li>@recipe.Title</li>
-            <li>@recipe.Author</li>
-            <li>@recipe.ImageUrl</li>
-            @if (recipe.Rating == null)
+<p>
+    <h2 class="text-center">@ViewBag.Title</h2>
+    <div class="text-center row justify-content-center">
+        <div class="card col-3 h-100" style="width: 40rem;">
+            @foreach (var recipe in Model)
             {
-                <li>Not Rated Yet</li>
+                <h4 class="mt-4">@recipe.Title</h4>
+                <p>@recipe.Author</p>
+                <p><img src=@recipe.ImageUrl class="card-img-top img-fluid" style="height: 200px; object-fit: cover;" alt="@recipe.Title" /></p>
+                <div class="card-body" style="height: calc(100% - 150px); overflow: auto;">
+                    <div class="card-title mt-1">
+                        @if (recipe.Rating == null)
+                        {
+                            <div>Няма рейтинг</div>
+                        }
+                        else
+                        {
+                            <div>@recipe.Rating</div>
+                        }
+                    </div>
+                </div>
+                <div class="col-12 px-1 text-center mb-4">
+                    <a asp-controller="Recipe" asp-action="Details" asp-route-id="@recipe.Id" class="btn btn-warning btn-sm mb-2 w-100 fw-bold rounded btn-dark-text">Details</a>
+                </div>
             }
-            else
-            {
-                <li>@recipe.Rating</li>
-            }
-            <p></p>
-        }
-</ul>
+            </div>
+     </div>
 </p>
 
 

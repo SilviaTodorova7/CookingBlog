@@ -6,5 +6,6 @@ namespace CookingBlog.Services.Interfaces
     {
         Task<ICollection<RecipeViewModel>> AllRecipesAsync();
 
+        Task<RecipeDetailsViewModel> ViewDetailsAsync(int id);
     }
 }
