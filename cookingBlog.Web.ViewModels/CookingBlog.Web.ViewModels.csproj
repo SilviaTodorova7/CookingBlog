@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CookingBlog.Common\CookingBlog.Common.csproj" />
+    <ProjectReference Include="..\CookingBlog.Data.Models\CookingBlog.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

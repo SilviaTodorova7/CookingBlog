@@ -13,6 +13,22 @@ namespace CookingBlog.Services
         {
             this.dbContext = dbContext;
         }
+
+        public async Task AddNewRecipeAsync(RecipeAddViewModel model, string userId)
+        {
+            Recipe newRecipe = new Recipe()
+            {
+                Title = model.Title,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl,
+                CategoryId = model.CategoryId,
+                AuthorId = userId,
+            };
+
+            await dbContext.AddAsync(newRecipe);
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<ICollection<RecipeAllViewModel>> AllRecipesAsync()
         {
             ICollection<RecipeAllViewModel> AllRecipes = await this.dbContext
@@ -75,6 +91,20 @@ namespace CookingBlog.Services
                 Description = recipeToEdit.Description,
                 ImageUrl = recipeToEdit.ImageUrl,
             };
+        }
+
+        public async Task<ICollection<CategoryViewModel>> GetCategoriesAsync()
+        {
+            ICollection<CategoryViewModel> allCategories = await this.dbContext
+                .Categories
+                .Select(c => new CategoryViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                })
+                .ToArrayAsync();
+
+            return allCategories;
         }
 
         public async Task<RecipeDetailsViewModel> ViewDetailsAsync(int id)

@@ -13,5 +13,9 @@ namespace CookingBlog.Services.Interfaces
         Task EditRecipeAsync(RecipeEditOrDeleteViewModel model, int id, string userId);
 
         Task DeleteRecipeAsync(int id, string userId);
+
+        Task<ICollection<CategoryViewModel>> GetCategoriesAsync();
+
+        Task AddNewRecipeAsync(RecipeAddViewModel model, string userId);
     }
 }

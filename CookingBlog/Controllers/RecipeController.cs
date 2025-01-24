@@ -111,5 +111,43 @@ namespace CookingBlog.Controllers
                 return RedirectToAction("All", "Recipe");
             }
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Add()
+        {
+            ICollection<CategoryViewModel> categories = await this.recipeService
+                .GetCategoriesAsync();
+
+            RecipeAddViewModel model = new RecipeAddViewModel()
+            {
+                Categories = categories
+            };
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Add(RecipeAddViewModel model)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    model.Categories = await this.recipeService.GetCategoriesAsync();
+            //    return View(model);
+            //}
+
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+            try
+            {
+                await this.recipeService.AddNewRecipeAsync(model, userId);
+                return RedirectToAction("All", "Recipe");
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "An error occured while trying to add recipe. Plaese try again later or contact administrator!");
+                return RedirectToAction("All", "Recipe");
+            }
+        }
     }
 }
