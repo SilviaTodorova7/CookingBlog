@@ -3,8 +3,9 @@ using static CookingBlog.Common.EntityValidationConstants.Recipe;
 
 namespace CookingBlog.Web.ViewModels
 {
-    public class RecipeEditViewModel
+    public class RecipeEditOrDeleteViewModel
     {
+        public int Id { get; set; }
 
         [Required]
         [StringLength(TitleMaxLength, MinimumLength = TitleMinLength)]

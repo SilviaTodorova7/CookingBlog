@@ -30,7 +30,21 @@ namespace CookingBlog.Services
             return AllRecipes;
         }
 
-        public async Task EditRecipeAsync(RecipeEditViewModel model, int id, string userId)
+        public async Task DeleteRecipeAsync(int id, string userId)
+        {
+            Recipe recipeToDelete = await this.dbContext
+                .Recipes
+                .Where(r => r.IsActive)
+                .FirstAsync(r => r.Id == id);
+
+            if (recipeToDelete.AuthorId == userId)
+            {
+                recipeToDelete.IsActive = false;
+                await this.dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task EditRecipeAsync(RecipeEditOrDeleteViewModel model, int id, string userId)
         {
             Recipe recipeToEdit = await this.dbContext
                 .Recipes
@@ -47,15 +61,16 @@ namespace CookingBlog.Services
             }
         }
 
-        public async Task<RecipeEditViewModel> FindRecipeToEditAsync(int id)
+        public async Task<RecipeEditOrDeleteViewModel> FindRecipeToEditOrDeleteAsync(int id)
         {
             Recipe recipeToEdit = await this.dbContext
                 .Recipes
                 .Where (r => r.IsActive)
                 .FirstAsync(r => r.Id == id);
 
-            return new RecipeEditViewModel()
+            return new RecipeEditOrDeleteViewModel()
             {
+                Id = id,
                 Title = recipeToEdit.Title,
                 Description = recipeToEdit.Description,
                 ImageUrl = recipeToEdit.ImageUrl,
@@ -66,6 +81,7 @@ namespace CookingBlog.Services
         {
             Recipe recipe = await this.dbContext
                 .Recipes
+                .Where(r => r.IsActive)
                 .Include(r => r.Author)
                 .Include(r => r.Category)
                 .FirstAsync(r => r.Id == id);

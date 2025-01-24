@@ -44,8 +44,8 @@ namespace CookingBlog.Controllers
         {
             try
             {
-                RecipeEditViewModel recipeModel = await this.recipeService
-                .FindRecipeToEditAsync(id);
+                RecipeEditOrDeleteViewModel recipeModel = await this.recipeService
+                .FindRecipeToEditOrDeleteAsync(id);
                 return View(recipeModel);
             }
             catch (Exception)
@@ -57,7 +57,7 @@ namespace CookingBlog.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, RecipeEditViewModel model)
+        public async Task<IActionResult> Edit(int id, RecipeEditOrDeleteViewModel model)
         {
             string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
@@ -77,5 +77,39 @@ namespace CookingBlog.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                RecipeEditOrDeleteViewModel recipeModel = await this.recipeService
+                .FindRecipeToEditOrDeleteAsync(id);
+                return View(recipeModel);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "An error occured while trying to delete recipe. Plaese try again later or contact administrator!");
+                return RedirectToAction("All", "Recipe");
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, RecipeEditOrDeleteViewModel model)
+        {
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+            try
+            {
+                await this.recipeService.DeleteRecipeAsync(id, userId);
+                return RedirectToAction("All", "Recipe");
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "An error occured while trying to delete recipe. Plaese try again later or contact administrator!");
+                return RedirectToAction("All", "Recipe");
+            }
+        }
     }
 }

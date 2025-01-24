@@ -8,8 +8,10 @@ namespace CookingBlog.Services.Interfaces
 
         Task<RecipeDetailsViewModel> ViewDetailsAsync(int id);
 
-        Task<RecipeEditViewModel> FindRecipeToEditAsync(int id);
+        Task<RecipeEditOrDeleteViewModel> FindRecipeToEditOrDeleteAsync(int id);
 
-        Task EditRecipeAsync(RecipeEditViewModel model, int id, string userId);
+        Task EditRecipeAsync(RecipeEditOrDeleteViewModel model, int id, string userId);
+
+        Task DeleteRecipeAsync(int id, string userId);
     }
 }
