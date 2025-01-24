@@ -1,6 +1,6 @@
 ﻿namespace CookingBlog.Web.ViewModels
 {
-    public class RecipeViewModel
+    public class RecipeAllViewModel
     {
         public int Id { get; set; }
 

@@ -13,12 +13,12 @@ namespace CookingBlog.Services
         {
             this.dbContext = dbContext;
         }
-        public async Task<ICollection<RecipeViewModel>> AllRecipesAsync()
+        public async Task<ICollection<RecipeAllViewModel>> AllRecipesAsync()
         {
-            ICollection<RecipeViewModel> AllRecipes = await this.dbContext
+            ICollection<RecipeAllViewModel> AllRecipes = await this.dbContext
                 .Recipes
                 .Where(r => r.IsActive)
-                .Select(r => new RecipeViewModel()
+                .Select(r => new RecipeAllViewModel()
                 {
                     Id = r.Id,
                     Title = r.Title,
@@ -28,6 +28,38 @@ namespace CookingBlog.Services
                 }).ToArrayAsync();
 
             return AllRecipes;
+        }
+
+        public async Task EditRecipeAsync(RecipeEditViewModel model, int id, string userId)
+        {
+            Recipe recipeToEdit = await this.dbContext
+                .Recipes
+                .Where(r => r.IsActive)
+                .FirstAsync(r => r.Id == id);
+
+            if (recipeToEdit.AuthorId == userId)
+            {
+                recipeToEdit.Title = model.Title;
+                recipeToEdit.Description = model.Description;
+                recipeToEdit.ImageUrl = model.ImageUrl;
+            
+                await this.dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<RecipeEditViewModel> FindRecipeToEditAsync(int id)
+        {
+            Recipe recipeToEdit = await this.dbContext
+                .Recipes
+                .Where (r => r.IsActive)
+                .FirstAsync(r => r.Id == id);
+
+            return new RecipeEditViewModel()
+            {
+                Title = recipeToEdit.Title,
+                Description = recipeToEdit.Description,
+                ImageUrl = recipeToEdit.ImageUrl,
+            };
         }
 
         public async Task<RecipeDetailsViewModel> ViewDetailsAsync(int id)
@@ -42,7 +74,7 @@ namespace CookingBlog.Services
             {
                 Id= id,
                 Title = recipe.Title,
-                Author = recipe.Author.Email,
+                Author = recipe.Author.Email!,
                 ImageUrl = recipe.ImageUrl,
                 Category = recipe.Category.Name,
                 Rating = recipe.Rating,
@@ -55,5 +87,8 @@ namespace CookingBlog.Services
                 }).ToArray()
             };
         }
+
+
+
     }
 }

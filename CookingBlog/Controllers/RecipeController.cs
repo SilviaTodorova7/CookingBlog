@@ -1,7 +1,9 @@
 ﻿using CookingBlog.Services.Interfaces;
 using CookingBlog.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Claims;
 
 namespace CookingBlog.Controllers
 {
@@ -16,7 +18,7 @@ namespace CookingBlog.Controllers
 
         public async Task<IActionResult> All()
         {
-            ICollection<RecipeViewModel> allRecipesViewModel = await this.recipeService.AllRecipesAsync();
+            ICollection<RecipeAllViewModel> allRecipesViewModel = await this.recipeService.AllRecipesAsync();
             
             return View(allRecipesViewModel);
         }
@@ -35,5 +37,45 @@ namespace CookingBlog.Controllers
                 return RedirectToAction("All", "Recipe");
             }
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult> Edit(int id)
+        {
+            try
+            {
+                RecipeEditViewModel recipeModel = await this.recipeService
+                .FindRecipeToEditAsync(id);
+                return View(recipeModel);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "An error occured while trying to edit recipe. Plaese try again later or contact administrator!");
+                return RedirectToAction("All", "Recipe");
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, RecipeEditViewModel model)
+        {
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                await this.recipeService.EditRecipeAsync(model, id, userId);
+                return RedirectToAction("All", "Recipe");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("All", "Recipe");
+            }
+        }
+
     }
 }

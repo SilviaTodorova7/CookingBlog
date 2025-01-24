@@ -14,11 +14,15 @@
         <div class="card-body text-center">
             <h3 class="card-title">@Model.Title</h3>
             <p class="card-text"><small class="text-muted">@Model.Rating</small></p>
-            <p class="card-text"><small class="text-muted">@Model.Author</small></p>
-            <p class="card-text"><small class="text-muted">@Model.Category</small></p>
-            <img src="@Model.ImageUrl" class="card-img-top img-fluid" style="max-height: 300px; object-fit: contain;" alt="Game Image">
-            <p class="card-text">@Model.Description</p>
+            <p class="card-text"><small class="text-muted">Category: @Model.Category</small></p>
+            <p class="card-text"><small class="text-muted">Author: @Model.Author</small></p>
+            <img src="@Model.ImageUrl" class="card-img-top img-fluid" style="max-height: 500px; object-fit: contain;" alt="Recipe Image">
+            <p class="card-text pt-4">@Model.Description</p>
             <p class="card-text"><small class="text-muted">Comments:
+                @if (!Model.Comments.Any())
+                    {
+                        <small>No comments yet</small>
+                    }
                 @foreach (var comment in Model.Comments)
                     {
                         <small>@comment.Title</small>
@@ -29,7 +33,7 @@
             </p>
         </div>
 
-        <a asp-controller="Recipe" asp-action="All" class="btn btn-warning btn-dark-text btn-rounded mb-2 w-200 p-3 fw-bold">Back to All Recipes</a>
+        <a asp-controller="Recipe" asp-action="All" class="btn btn-outline-secondary btn-rounded mb-2 w-200 p-3 fw-bold">Back to All Recipes</a>
         @if (User?.Identity?.Name == @Model.Author)
         {
             <a asp-controller="Recipe" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-dark-text btn-rounded mb-2 w-100 p-3 fw-bold">Edit</a>
@@ -37,3 +41,7 @@
         }
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
